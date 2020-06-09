@@ -76,7 +76,7 @@ void viewStudentaccounts(ADMINISTRATOR* reg, int stCounter, int& maxId)
     }
 }
 
-bool listDeleteAccountsmenu(ADMINISTRATOR* reg, int trCounter, int& maxId, int stCounter, int searchID)
+bool listDeleteAccountsMenu(ADMINISTRATOR* reg, int trCounter, int& maxId, int stCounter, int searchID)
 {
     cout << endl;                                    
     cout << "|==========================|" << endl;
@@ -135,7 +135,7 @@ void addStudentAccounts(ADMINISTRATOR* reg, int stCounter, int& maxId) // Struct
     idgenerator(maxId);
 }
 
-bool administratorMenu(ADMINISTRATOR* reg, int stCounter, int trCounter, int& maxId)
+bool administratorMenu(ADMINISTRATOR* reg, int stCounter, int trCounter, int& maxId,int searchID)
 {
     cout << endl;                                    
     cout << "|==========================|" << endl;
@@ -162,7 +162,7 @@ retry4:
         break;
 
     case 3:
-        listDeleteAccountsmenu(reg, trCounter, maxId, stCounter);
+        listDeleteAccountsMenu(reg, trCounter, maxId, stCounter, searchID);
         break;
 
     default:
@@ -171,7 +171,7 @@ retry4:
     }
 }
 
-bool checkSystemAdministrator(string adminPass, string adminpasstry, ADMINISTRATOR* reg, int stCounter, int trCounter, int& maxId)
+bool checkSystemAdministrator(string adminPass, string adminpasstry, ADMINISTRATOR* reg, int stCounter, int trCounter, int& maxId, int searchID)
 {
 retry4:
     cout << endl;
@@ -182,7 +182,7 @@ retry4:
 
     if (adminpasstry == adminPass)
     {
-        administratorMenu(reg, stCounter, trCounter, maxId);
+        administratorMenu(reg, stCounter, trCounter, maxId, searchID);
     }
     else
     {
@@ -242,16 +242,17 @@ retry2:
     cout << "Username: "; getline(cin, stUsername);
     cout << "Pass: "; getline(cin, stpasstry);
     cout << "|============================================================================|" << endl;
-
-    if ()// kato dobavim data -> tam shte ima zapisani deca (parola i ime) v tozi if shte proverim dali suotvetstvat
+    /*if () kato dobavim data -> tam shte ima zapisani deca (parola i ime) v tozi if shte proverim dali suotvetstvat
     {
         teacherMenu();
     }
+
     else
     {
         cout << "Try Again !" << endl;
         goto retry2;
     }
+    */
 }
 
 
@@ -318,7 +319,7 @@ retry2:
     }
 }
 
-bool mainMenu(string trPasstry, string trPassword, string stUsername, string stpasstry, string adminPass, string adminpasstry, ADMINISTRATOR* reg, int stCounter, int trCounter)
+bool mainMenu(string trPasstry, string trPassword, string stUsername, string stpasstry, string adminPass, string adminpasstry, ADMINISTRATOR* reg, int stCounter, int trCounter,int searchID)
 {
     cout << endl;
     cout << "|======================|" << endl;
