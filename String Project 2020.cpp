@@ -2,6 +2,15 @@
 #include <string>
 using namespace std;
 
+
+// ---------------------------------------------------------------------------- Administrator ----------------------------------------------------------------------------
+
+int idgenerator(int& maxId)
+{
+    maxId++;
+    return maxId;
+}
+
 struct ADMINISTRATOR
 {
     string stUsername;
@@ -11,7 +20,63 @@ struct ADMINISTRATOR
     string trPass;
 };
 
-bool listDeleteAccountsmenu()
+int findId(ADMINISTRATOR* reg, int trCounter, int& maxId, int stCounter, int searchID)
+{
+    cout << endl;
+    cout << "|===============================|" << endl;
+    cout << "Enter the account ID: "; cin >> searchID;
+    cout << "|===============================|" << endl;
+    for (int i = 0; i < stCounter; i++)
+    {
+        for (int i = 0; i < trCounter; i++)
+        {
+            if (searchID == maxId)
+            {
+                return i;
+            }
+        }
+    }
+}
+
+void deleteAccount(ADMINISTRATOR* reg, int trCounter, int& maxId, int stCounter, int searchID)
+{
+    for (int i = findId(reg, stCounter, searchID, maxId, stCounter); i < stCounter - 1; i++)
+    {
+        for (int i = findId(reg, stCounter, searchID, maxId, stCounter); i < trCounter - 1; i++)
+        {
+            reg[i] = reg[i + 1];
+        }
+    }
+    stCounter--;
+    trCounter--;
+}
+
+void viewTeacheraccounts(ADMINISTRATOR* reg, int trCounter, int& maxId)
+{
+    for (int i = 0; i < trCounter; i++)
+    {
+        cout << endl;
+        cout << "|===============================|" << endl;
+        cout << "Teacher Username: "; cout << reg[i].trUsername;
+        cout << "Teacher Pass: "; cout << reg[i].trPass;
+        cout << "Account ID: "; cout << maxId;
+        cout << "|===============================|" << endl;
+    }
+}
+
+void viewStudentaccounts(ADMINISTRATOR* reg, int stCounter, int& maxId)
+{
+    for (int i = 0; i < stCounter; i++)
+    {
+        cout << "|===============================|" << endl;
+        cout << "Student Username: "; cout << reg[i].stUsername;
+        cout << "Student Pass: "; cout << reg[i].stPass;
+        cout << "Account ID: "; cout << maxId;
+        cout << "|===============================|" << endl;
+    }
+}
+
+bool listDeleteAccountsmenu(ADMINISTRATOR* reg, int trCounter, int& maxId, int stCounter, int searchID)
 {
     cout << endl;                                    
     cout << "|==========================|" << endl;
@@ -29,15 +94,15 @@ retry4:
     switch (option5)
     {
     case 1:
-        //Function
+        viewStudentaccounts(reg,stCounter,maxId);
         break;
 
     case 2:
-        //Function
+        viewTeacheraccounts(reg,trCounter,maxId);
         break;
 
     case 3:
-        //Function
+        deleteAccount(reg, trCounter, maxId, stCounter, searchID);
         break;
 
     default:
@@ -46,7 +111,7 @@ retry4:
     }
 }
 
-void addTeacherAccounts(ADMINISTRATOR* reg, int trCounter) // Structura administrator -> 'reg'
+void addTeacherAccounts(ADMINISTRATOR* reg, int trCounter, int& maxId) // Structura administrator -> 'reg'
 {
     for (int i = 0; i < trCounter; i++)
     {
@@ -55,10 +120,10 @@ void addTeacherAccounts(ADMINISTRATOR* reg, int trCounter) // Structura administ
     }
     trCounter++;
 
-    //generate id
+    idgenerator(maxId);
 }
 
-void addStudentAccounts(ADMINISTRATOR* reg, int stCounter) // Structura administrator -> 'reg'
+void addStudentAccounts(ADMINISTRATOR* reg, int stCounter, int& maxId) // Structura administrator -> 'reg'
 {
     for (int i = 0; i < stCounter; i++)
     {
@@ -67,10 +132,10 @@ void addStudentAccounts(ADMINISTRATOR* reg, int stCounter) // Structura administ
     }
     stCounter++;
 
-    //generate id
+    idgenerator(maxId);
 }
 
-bool administratorMenu(ADMINISTRATOR* reg, int stCounter, int trCounter)
+bool administratorMenu(ADMINISTRATOR* reg, int stCounter, int trCounter, int& maxId)
 {
     cout << endl;                                    
     cout << "|==========================|" << endl;
@@ -89,15 +154,15 @@ retry4:
     switch (option4)
     {
     case 1:
-        addStudentAccounts(reg, stCounter);
+        addStudentAccounts(reg,stCounter,maxId);
         break;
 
     case 2:
-        addTeacherAccounts(reg, trCounter);
+        addTeacherAccounts(reg, trCounter, maxId);
         break;
 
     case 3:
-        listDeleteAccountsmenu();
+        listDeleteAccountsmenu(reg, trCounter, maxId, stCounter);
         break;
 
     default:
@@ -106,7 +171,7 @@ retry4:
     }
 }
 
-bool checkSystemAdministrator(string adminPass, string adminpasstry, ADMINISTRATOR* reg, int stCounter, int trCounter)
+bool checkSystemAdministrator(string adminPass, string adminpasstry, ADMINISTRATOR* reg, int stCounter, int trCounter, int& maxId)
 {
 retry4:
     cout << endl;
@@ -117,7 +182,7 @@ retry4:
 
     if (adminpasstry == adminPass)
     {
-           administratorMenu(reg, stCounter, trCounter);
+        administratorMenu(reg, stCounter, trCounter, maxId);
     }
     else
     {
@@ -178,7 +243,7 @@ retry2:
     cout << "Pass: "; getline(cin, stpasstry);
     cout << "|============================================================================|" << endl;
 
-    if (// kato dobavim data -> tam shte ima zapisani deca (parola i ime) v tozi if shte proverim dali suotvetstvat)
+    if ()// kato dobavim data -> tam shte ima zapisani deca (parola i ime) v tozi if shte proverim dali suotvetstvat
     {
         teacherMenu();
     }
@@ -258,9 +323,9 @@ bool mainMenu(string trPasstry, string trPassword, string stUsername, string stp
     cout << endl;
     cout << "|======================|" << endl;
     cout << "Choose your character" << endl;
-    cout << "1. Teacher" << endl;
-    cout << "2. Student" << endl;
-    cout << "3. Administrator" << endl;
+    cout << "1. Teacher" << endl; // In progress
+    cout << "2. Student" << endl; // In progress
+    cout << "3. Administrator" << endl; // Complete
     cout << "|======================|" << endl;
 
 retry1:
@@ -300,4 +365,7 @@ int main()
 
     string adminPass = "adminadmin";
     string adminpasstry = "";
+
+    int maxId = 0;
+    int searchID = 0;
 }
