@@ -20,6 +20,13 @@ struct ADMINISTRATOR
     string trPass;
 };
 
+struct QUIZ {
+	string questions[100];
+	string correctAnswers[100];
+	string studentAnswers[100];
+	string quizname;
+};
+
 int findId(ADMINISTRATOR* reg, int trCounter, int& maxId, int stCounter, int searchID)
 {
     cout << endl;
@@ -51,7 +58,7 @@ void deleteAccount(ADMINISTRATOR* reg, int trCounter, int& maxId, int stCounter,
     trCounter--;
 }
 
-void viewTeacheraccounts(ADMINISTRATOR* reg, int trCounter, int& maxId)
+void viewTeacherAccounts(ADMINISTRATOR* reg, int trCounter, int& maxId)
 {
     for (int i = 0; i < trCounter; i++)
     {
@@ -98,7 +105,7 @@ retry4:
         break;
 
     case 2:
-        viewTeacheraccounts(reg,trCounter,maxId);
+        viewTeacherAccounts(reg,trCounter,maxId);
         break;
 
     case 3:
@@ -195,13 +202,13 @@ retry4:
 
 bool studentMenu()
 {
-    cout << endl;                                     // Da se napravi structura Topic ! Vsqka shte si ima svoi unikalen kod (counter)
+    cout << endl;                                     // Da se napravi structura Quiz ! Vsqka shte si ima svoi unikalen kod (counter)
     cout << "|==========================|" << endl;
     cout << "Welcome, choose an option !" << endl;
-    cout << "1. " << endl;
-    cout << "2. See Topics" << endl;
-    cout << "3. Edit Topic" << endl;
-    cout << "4. Delete Topic" << endl;
+    cout << "1. Create Quiz" << endl;
+    cout << "2. See Quizzes" << endl;
+    cout << "3. Edit Quiz" << endl;
+    cout << "4. Delete Quiz" << endl;
     cout << "|==========================|" << endl;
 
 retry3:
@@ -259,15 +266,46 @@ retry2:
 // ---------------------------------------------------------------------------- Teacher ----------------------------------------------------------------------------
 
 
-bool teacherMenu()
+bool CreateQuestion(QUIZ* quiz, QUIZ* quiznames,string quizname, string question, string correctanswer, int& quizcount,int questionCounter)
 {
-    cout << endl;                                     // Da se napravi structura Topic ! Vsqka shte si ima svoi unikalen kod (counter)
+	quiznames[quizcount].quizname = quizname;
+	quiz[quizcount].questions[questionCounter] = question;
+	quiz[quizcount].correctAnswers[questionCounter] = correctanswer;
+	return true;
+}
+void EnterQuiz(QUIZ* quiz, int& quizcount,int questionCounter)
+{
+	int maxQuestions;
+	cout << "|============================================================================|" << endl;
+	cout << "How many questions would you like to add?" << endl;
+	cin >> quizname;
+	cin >> maxQuestions;
+	cout << "|============================================================================|" << endl;
+	string question, correctanswer;
+	cin >> question >> correctanswer;
+	if (CreateQuestion(quiz, question, correctanswer,quizcount, questionCounter, quizname)==true and questionCounter<maxQuestions)
+	{
+		questionCounter++;
+	}
+}
+void ShowQuizzes(QUIZ* quiznames, int& quizzcount)
+{
+	cout << "List of all Quizzes";
+	for (int i = 0; i < quizzcount)
+	{
+		cout << i + 1 << ". " << quiznames[i];
+	}
+}
+
+ bool teacherMenu()
+{
+    cout << endl;                                     // Da se napravi structura Quiz ! Vsqka shte si ima svoi unikalen kod (counter)
     cout << "|==========================|" << endl;
     cout << "Welcome, choose an option !" << endl;
-    cout << "1. Create Topic" << endl;
-    cout << "2. See Topics" << endl;
-    cout << "3. Edit Topic" << endl;
-    cout << "4. Delete Topic" << endl;
+    cout << "1. Create Quiz" << endl;
+    cout << "2. See Quizzes" << endl;
+    cout << "3. Edit Quiz" << endl;
+    cout << "4. Delete Quiz" << endl;
     cout << "|==========================|" << endl;
 
 retry3:
@@ -319,7 +357,7 @@ retry2:
     }
 }
 
-bool mainMenu(string trPasstry, string trPassword, string stUsername, string stpasstry, string adminPass, string adminpasstry, ADMINISTRATOR* reg, int stCounter, int trCounter,int searchID)
+bool mainMenu(string trPasstry, string trPassword, string stUsername, string stpasstry, string adminPass, string adminpasstry, ADMINISTRATOR* reg, int stCounter, int trCounter,int searchID, int& maxId)
 {
     cout << endl;
     cout << "|======================|" << endl;
@@ -345,7 +383,7 @@ retry1:
         break;
 
     case 3:
-        checkSystemAdministrator(adminPass, adminpasstry, reg, stCounter, trCounter);
+        checkSystemAdministrator(adminPass, adminpasstry, reg, stCounter, trCounter, maxId, searchID);
         break;
 
     default:
@@ -356,6 +394,10 @@ retry1:
 
 int main()
 {
+	QUIZ quiz[100];
+	QUIZ quiznames[100];
+	int quizcount = 0;
+
     string trPassword = "english123";
     string trPasstry = "";
     int trCounter = 0;
