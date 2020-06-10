@@ -207,6 +207,46 @@ retry4:
 }
 
 // ---------------------------------------------------------------------------- Student ----------------------------------------------------------------------------
+void Quiz(QUIZ* quiz, int quizcount, int& maxId, QUIZ* quizQuestions, int quiznumber, int& amount, QUIZ* studentAns)
+{
+    cout << "Welcome to" << quiz[quiznumber].quizzName << "Quiz!";
+    for (int i = 0; i < quiz[quiznumber].amount)
+    {
+        cout << i + 1 << quiz[quiznumber].quizQuestions[i];
+        cout << "\nType your answer here:";
+        cin >> quiz[quiznumber].studentAns[i];
+    }
+    cout << "Quiz completed";
+    cout << "Check your grades for any updates";
+}
+void chooseQuiz(QUIZ* quiz, int quizcount, int& maxId, int quiznumber, char YN)
+{
+    returnyn;
+    for (int i = 0; i < quizcount; i++)
+    {
+        cout << "|================================================|" << endl;
+        cout << "All Quizzes:"
+            cout << i + 1 << ". " << quiz[i].quizName;
+
+
+    }
+    cout << "\n\nOn what quiz do you want to work on?"; cin >> quiznumber;
+returninc:
+    cout << "\nDo you wish to start now?(y|n)"; cin >> YN;
+    if (YN == y)
+    {
+        startQuiz(quiznumber);
+    }
+    else if (YN == n)
+    {
+        goto returnyn;
+    }
+    else
+    {
+        cout << "Incorrect input";
+        goto returninc;
+    }
+}
 
 bool studentMenu()
 {
