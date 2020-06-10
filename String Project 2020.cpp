@@ -213,10 +213,8 @@ bool studentMenu()
     cout << endl;                                     // Da se napravi structura Quiz ! Vsqka shte si ima svoi unikalen kod (counter)
     cout << "|==========================|" << endl;
     cout << "Welcome, choose an option !" << endl;
-    cout << "1. Create Quiz" << endl;
-    cout << "2. See Quizzes" << endl;
-    cout << "3. Edit Quiz" << endl;
-    cout << "4. Delete Quiz" << endl;
+    cout << "1. See Quizzes" << endl;
+    cout << "2. Exit Student Menu" << endl;
     cout << "|==========================|" << endl;
 
 retry3:
@@ -259,7 +257,7 @@ retry10:
     cout << "|============================================================================|" << endl;
     if (stUsername != "" && stpasstry != "") // kato dobavim data -> tam shte ima zapisani deca (parola i ime) v tozi if shte proverim dali suotvetstvat
     {
-        cout << "Bravo";
+        cout << "Congrats !";
         //studentMenu();
     }
     else
