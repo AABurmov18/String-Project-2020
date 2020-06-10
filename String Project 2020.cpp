@@ -368,7 +368,7 @@ retry3:
         break;
 
     case 2:
-        viewQuiz(quiz, quizcount, maxId);
+        viewQuiz(quiz, quizcount, maxId, searchID);
         break;
 
     case 3:
