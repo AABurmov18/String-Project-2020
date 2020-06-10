@@ -207,7 +207,7 @@ retry4:
 }
 
 // ---------------------------------------------------------------------------- Student ----------------------------------------------------------------------------
-void Quiz(QUIZ* quiz, int quizcount, int& maxId, QUIZ* quizQuestions, int quiznumber, int& amount, QUIZ* studentAns)
+void startQuiz(QUIZ* quiz, int quizcount, int& maxId, int quiznumber, int& amount, QUIZ* studentAns)
 {
     cout << "Welcome to" << quiz[quiznumber].quizzName << "Quiz!";
     for (int i = 0; i < quiz[quiznumber].amount)
@@ -219,9 +219,10 @@ void Quiz(QUIZ* quiz, int quizcount, int& maxId, QUIZ* quizQuestions, int quiznu
     cout << "Quiz completed";
     cout << "Check your grades for any updates";
 }
+
 void chooseQuiz(QUIZ* quiz, int quizcount, int& maxId, int quiznumber, char YN)
 {
-    returnyn;
+    returnyn:
     for (int i = 0; i < quizcount; i++)
     {
         cout << "|================================================|" << endl;
@@ -233,11 +234,11 @@ void chooseQuiz(QUIZ* quiz, int quizcount, int& maxId, int quiznumber, char YN)
     cout << "\n\nOn what quiz do you want to work on?"; cin >> quiznumber;
 returninc:
     cout << "\nDo you wish to start now?(y|n)"; cin >> YN;
-    if (YN == y)
+    if (YN == 'y')
     {
         startQuiz(quiznumber);
     }
-    else if (YN == n)
+    else if (YN == 'n')
     {
         goto returnyn;
     }
@@ -248,7 +249,7 @@ returninc:
     }
 }
 
-bool studentMenu()
+bool studentMenu(QUIZ* quiz, int quizcount, int& maxId, int quiznumber, char YN)
 {
     cout << endl;                                     // Da se napravi structura Quiz ! Vsqka shte si ima svoi unikalen kod (counter)
     cout << "|==========================|" << endl;
@@ -265,25 +266,18 @@ retry3:
     switch (option3)
     {
     case 1:
-        // Function
+		chooseQuiz(quiz, quizcount, maxId, quiznumber, YN);
         break;
 
     case 2:
-        // Function
-        break;
-
-    case 3:
-        // Function
-        break;
-
-    case 4:
-        // Function
+		return false;
         break;
 
     default:
         cout << "Incorrect input" << endl;
         goto retry3;
     }
+	return true;
 }
 
 bool checkSystemStudent(string stUsername, string stpasstry, QUIZ* quiz, int quizcount, int& maxId, int searchID)
