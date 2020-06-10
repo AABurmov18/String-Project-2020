@@ -294,14 +294,23 @@ void deleteQuiz(QUIZ* quiz, int quizcount, int& maxId, int searchID)
     quizcount--;
 }
 
-void viewQuiz(QUIZ* quiz, int quizcount, int& maxId)
+void viewQuiz(QUIZ* quiz, int quizcount, int& maxId, int quiznumber)
 {
     for (int i = 0; i < quizcount; i++)
     {
         cout << "|================================================|" << endl;
-        cout << "Quiz Name: " << quiz[i].quizName;
+        cout << "All Quiz:";
+        cout << i << ". " << quiz[i].quizName;
+
+    }
+    cout << "\n\nSelect a quiz, that you want to see tha questions of."; cin >> quiznumber;
+
+
+
+    for (int i = 0; i < quizcount; i++)
+    {
         cout << "Questions" << endl;
-        cout << i << quiz[i].quizQuestions;
+        cout << i << quiz[quiznumber].quizQuestions[i];
         cout << "Quiz ID: "; cout << maxId;
         cout << "|================================================|" << endl;
         cout << endl;
