@@ -21,9 +21,10 @@ struct QUIZ
 {
     string quizName;
     string quizQuestions;
-    int amount[100];
-
-    string answers;
+    int amount;
+    string studentanswers;
+    string correctanswers;
+    float Grades;
 };
 
 // ---------------------------------------------------------------------------- Administrator ----------------------------------------------------------------------------
@@ -207,17 +208,31 @@ retry4:
 }
 
 // ---------------------------------------------------------------------------- Student ----------------------------------------------------------------------------
-void startQuiz(QUIZ* quiz, int quizcount, int& maxId, int quiznumber, QUIZ* amount, QUIZ* studentAns)
+void startQuiz(QUIZ* quiz, int quizcount, int& maxId, int quiznumber, QUIZ* amount, QUIZ* studentAns,QUIZ*Grades)
 {
+    int gradeCounter = 0;
     cout << "Welcome to" << quiz[quiznumber].quizzName << "Quiz!";
     for (int i = 0; i < quiz[quiznumber].amount[quiznumber]; i++)
     {
         cout << i + 1 << quiz[quiznumber].quizQuestions[i];
         cout << "\nType your answer here:";
         cin >> quiz[quiznumber].studentAns[i];
+        if (quiz[quiznumber].studentAns[i] != quiz[quiznumber].correctanswers)
+        {
+            gradeCounter++;
+            Grades = 6-gradeCounter * 0.25;
+        }
     }
     cout << "Quiz completed";
     cout << "Check your grades for any updates";
+}
+void viewGrades(QUIZ* quiz, QUIZ* Grades, int quizcount, int& maxId)
+{
+    cout << "These are your grades";
+    for (int i = 0; i < quizcount; i++)
+    {
+        cout << i + 1 << ". "<<quiz[i]<<" Grade:"<<Grades;
+    }
 }
 
 void chooseQuiz(QUIZ* quiz, int quizcount, int& maxId, int quiznumber, char YN, QUIZ* amount, QUIZ* studentAns)
@@ -328,27 +343,19 @@ void deleteQuiz(QUIZ* quiz, int quizcount, int& maxId, int searchID)
     quizcount--;
 }
 
-void viewQuiz(QUIZ* quiz, int quizcount, int& maxId, int quiznumber)
+void viewQuiz(QUIZ* quiz, int quizcount, int& maxId)
 {
     for (int i = 0; i < quizcount; i++)
     {
         cout << "|================================================|" << endl;
-        cout << "All Quiz:";
-        cout << i << ". " << quiz[i].quizName;
-
-    }
-    cout << "\n\nSelect a quiz, that you want to see tha questions of."; cin >> quiznumber;
-
-
-
-    for (int i = 0; i < quizcount; i++)
-    {
+        cout << "Quiz Name: " << quiz[i].quizName;
         cout << "Questions" << endl;
-        cout << i << quiz[quiznumber].quizQuestions[i];
+        cout << i << quiz[i].quizQuestions;
         cout << "Quiz ID: "; cout << maxId;
         cout << "|================================================|" << endl;
         cout << endl;
     }
+}
 }
 
 void createQuiz(QUIZ* quiz, int quizcount, int& maxId)
