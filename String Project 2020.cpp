@@ -21,10 +21,11 @@ struct QUIZ
 {
     string quizName;
     string quizQuestions;
-    int amount;
-    string studentanswers;
-    string correctanswers;
-    float Grades;
+    string quizAnswers;
+
+    double time;
+
+    string stAnswers;
 };
 
 // ---------------------------------------------------------------------------- Administrator ----------------------------------------------------------------------------
@@ -208,69 +209,94 @@ retry4:
 }
 
 // ---------------------------------------------------------------------------- Student ----------------------------------------------------------------------------
-void startQuiz(QUIZ* quiz, int quizcount, int& maxId, int quiznumber, QUIZ* amount, QUIZ* studentAns,QUIZ*Grades)
-{
-    int gradeCounter = 0;
-    cout << "Welcome to" << quiz[quiznumber].quizzName << "Quiz!";
-    for (int i = 0; i < quiz[quiznumber].amount[quiznumber]; i++)
-    {
-        cout << i + 1 << quiz[quiznumber].quizQuestions[i];
-        cout << "\nType your answer here:";
-        cin >> quiz[quiznumber].studentAns[i];
-        if (quiz[quiznumber].studentAns[i] != quiz[quiznumber].correctanswers)
-        {
-            gradeCounter++;
-            Grades = 6-gradeCounter * 0.25;
-        }
-    }
-    cout << "Quiz completed";
-    cout << "Check your grades for any updates";
-}
-void viewGrades(QUIZ* quiz, QUIZ* Grades, int quizcount, int& maxId)
-{
-    cout << "These are your grades";
-    for (int i = 0; i < quizcount; i++)
-    {
-        cout << i + 1 << ". "<<quiz[i]<<" Grade:"<<Grades;
-    }
-}
 
-void chooseQuiz(QUIZ* quiz, int quizcount, int& maxId, int quiznumber, char YN, QUIZ* amount, QUIZ* studentAns)
+
+
+void viewQuizName(QUIZ* quiz, int quizcount, int& maxId)
 {
-returnyn:
     for (int i = 0; i < quizcount; i++)
     {
+        cout << endl;
         cout << "|================================================|" << endl;
-        cout << "All Quizzes:" << endl;
-        cout << i + 1 << ". " << quiz[i].quizName;
-
-
+        cout << "Quiz Name: " << quiz[i].quizName;
+        cout << "Quiz ID: "; cout << maxId;
+        cout << "|================================================|" << endl;
     }
-    cout << "\n\nOn what quiz do you want to work on?"; cin >> quiznumber;
-returninc:
-    cout << "\nDo you wish to start now?(y|n)"; cin >> YN;
-    if (YN == 'y')
+}
+
+void startQuiz(QUIZ* quiz, int quizcount, int& maxId, int searchID, int stanswercount)
+{
+    for (int i = findIdQuiz(quiz, quizcount, maxId, searchID); i < quizcount; i++)
     {
-        startQuiz(quiz, quizcount, maxId, quiznumber, amount, studentAns);
+        cout << endl;
+        cout << "|================================================|" << endl;
+        cout << "Quiz Name: " << quiz[i].quizName;
+        cout << "Questions & Answers" << endl;
+        cout << "|================================================|" << endl;
+        cout << i << quiz[i].quizQuestions;
+        cout << "Your Answer: "; getline(cin, quiz[stanswercount].stAnswers);
     }
-    else if (YN == 'n')
+    stanswercount++;
+}
+
+void checkStudentResult(QUIZ* quiz, int quizcount, int& maxId, int searchID, int stanswercount, int AnswerCounterStudent)
+{
+    for (int i = 0; i < quizcount, stanswercount; i++)
     {
-        goto returnyn;
+        if (quiz[stanswercount].stAnswers.find(quiz[quizcount].quizAnswers))
+        {
+            AnswerCounterStudent++;
+        }
+        else
+            AnswerCounterStudent--;
+    }
+
+    if (AnswerCounterStudent >= 1 && AnswerCounterStudent <= 2)
+    {
+        cout << "Bad" << endl;
     }
     else
-    {
-        cout << "Incorrect input";
-        goto returninc;
-    }
+        if (AnswerCounterStudent == 3)
+        {
+            cout << "Average" << endl;
+        }
+        else
+            if (AnswerCounterStudent == 4)
+            {
+                cout << "Good" << endl;
+            }
+            else
+                if (AnswerCounterStudent == 5)
+                {
+                    cout << "Very Good!" << endl;
+                }
+                else
+                    if (AnswerCounterStudent == 6)
+                    {
+                        cout << "Excellent!" << endl;
+                    }
 }
 
-bool studentMenu(QUIZ* quiz, int quizcount, int& maxId, int quiznumber, char YN, QUIZ* amount, QUIZ* studentAns)
+void gradingScale()
+{
+    cout << "|=======================|" << endl;
+    cout << "1-2points - Bad" << endl;
+    cout << "3points - Average" << endl;
+    cout << "4points - Good" << endl;
+    cout << "5points - Very Good!" << endl;
+    cout << "6points - Excellent!" << endl;
+    cout << "|=======================|" << endl;
+}
+
+bool studentMenu(QUIZ* quiz, int quizcount, int& maxId, int searchID, int stanswercount, int AnswerCounterStudent)
 {
     cout << endl;                                     // Da se napravi structura Quiz ! Vsqka shte si ima svoi unikalen kod (counter)
     cout << "|==========================|" << endl;
     cout << "Welcome, choose an option !" << endl;
-    cout << "1. See Quizzes" << endl;
-    cout << "2. Exit Student Menu" << endl;
+    cout << "1. View Quizes" << endl;
+    cout << "2. Start Quiz" << endl;
+    cout << "3. See your result" << endl;
+    cout << "4. Grading scale" << endl;
     cout << "|==========================|" << endl;
 
 retry3:
@@ -281,38 +307,47 @@ retry3:
     switch (option3)
     {
     case 1:
-        chooseQuiz(quiz, quizcount, maxId, quiznumber, YN, amount, studentAns);
+        viewQuizName(quiz, quizcount, maxId);
         break;
 
     case 2:
-        return false;
+        startQuiz(quiz, quizcount, maxId, searchID, stanswercount);
+        break;
+
+    case 3:
+        checkStudentResult(quiz, quizcount, maxId, searchID, stanswercount, AnswerCounterStudent);
+        break;
+
+    case 4:
+        gradingScale();
         break;
 
     default:
         cout << "Incorrect input" << endl;
         goto retry3;
     }
-    return true;
 }
 
-bool checkSystemStudent(string stUsername, string stpasstry, QUIZ* quiz, int quizcount, int& maxId, int searchID, int quiznumber, char YN, QUIZ* amount, QUIZ* studentAns)
+bool checkSystemStudent(string stUsernameTry, string stpasstry, QUIZ* quiz, int quizcount, int& maxId, int searchID, int stanswercount, int AnswerCounterStudent, ADMINISTRATOR* reg, int stCounter)
 {
 retry10:
     cout << endl;
     cout << "|============================================================================|" << endl;
     cout << "You must enter a valid username and password to access the student Menu !" << endl;
-    cout << "Username: "; getline(cin, stUsername);
+    cout << "Username: "; getline(cin, stUsernameTry);
     cout << "Pass: "; getline(cin, stpasstry);
     cout << "|============================================================================|" << endl;
-    if (stUsername != "" && stpasstry != "") // kato dobavim data -> tam shte ima zapisani deca (parola i ime) v tozi if shte proverim dali suotvetstvat
+    for (int i = 0; i < stCounter; i++)
     {
-        cout << "Congrats !";
-        studentMenu(quiz, quizcount, maxId, quiznumber, YN, amount, studentAns);
-    }
-    else
-    {
-        cout << "Try Again !" << endl;
-        goto retry10;
+        if (stUsernameTry == reg[i].stUsername && stpasstry == reg[i].stPass) // kato dobavim data -> tam shte ima zapisani deca (parola i ime) v tozi if shte proverim dali suotvetstvat
+        {
+            studentMenu(quiz, quizcount, maxId, searchID, stanswercount, AnswerCounterStudent);
+        }
+        else
+        {
+            cout << "Try Again !" << endl;
+            goto retry10;
+        }
     }
 }
 
@@ -349,13 +384,13 @@ void viewQuiz(QUIZ* quiz, int quizcount, int& maxId)
     {
         cout << "|================================================|" << endl;
         cout << "Quiz Name: " << quiz[i].quizName;
-        cout << "Questions" << endl;
+        cout << "Questions & Answers" << endl;
         cout << i << quiz[i].quizQuestions;
+        cout << quiz[quizcount].quizAnswers;
         cout << "Quiz ID: "; cout << maxId;
         cout << "|================================================|" << endl;
         cout << endl;
     }
-}
 }
 
 void createQuiz(QUIZ* quiz, int quizcount, int& maxId)
@@ -365,6 +400,7 @@ void createQuiz(QUIZ* quiz, int quizcount, int& maxId)
     cout << endl;
     cout << "|==========================|" << endl;
     cout << "Enter the name of the Quiz"; getline(cin, quiz[quizcount].quizName);
+    //              cout << "Enter Quiz time remaining: "; cin >> quiz[quizcount].time; // Time
 
 retry7:
     cout << "Enter the amount of the questions"; cin >> amount;
@@ -373,6 +409,7 @@ retry7:
         for (int i = 0; i < amount; i++)
         {
             cout << i << " "; getline(cin, quiz[quizcount].quizQuestions);
+            cout << "Answer: "; getline(cin, quiz[quizcount].quizAnswers); // Answers
             cout << endl;
         }
         quizcount++;
@@ -387,7 +424,7 @@ retry7:
     }
 }
 
-bool teacherMenu(QUIZ* quiz, int quizcount, int& maxId, int searchID, int quiznumber)
+bool teacherMenu(QUIZ* quiz, int quizcount, int& maxId, int searchID)
 {
     cout << endl;
     cout << "|==========================|" << endl;
@@ -395,6 +432,8 @@ bool teacherMenu(QUIZ* quiz, int quizcount, int& maxId, int searchID, int quiznu
     cout << "1. Create Quiz" << endl;
     cout << "2. View Quizzes" << endl;
     cout << "3. Delete Quiz" << endl;
+    cout << "4. View Students Grades" << endl;
+    cout << "5. Grading scale" << endl;
     cout << "|==========================|" << endl;
 
 retry3:
@@ -409,11 +448,19 @@ retry3:
         break;
 
     case 2:
-        viewQuiz(quiz, quizcount, maxId, quiznumber);
+        viewQuiz(quiz, quizcount, maxId);
         break;
 
     case 3:
         deleteQuiz(quiz, quizcount, maxId, searchID);
+        break;
+
+    case 4:
+        // View Students results
+        break;
+
+    case 5:
+        gradingScale();
         break;
 
     default:
@@ -422,27 +469,31 @@ retry3:
     }
 }
 
-bool checkSystemTeacher(string trPasstry, string trPassword, QUIZ* quiz, int quizcount, int& maxId, int searchID, int quiznumber)
+bool checkSystemTeacher(string trPasstry, QUIZ* quiz, int quizcount, int& maxId, int searchID, string trUsernameTry, ADMINISTRATOR* reg, int trCounter)
 {
 retry2:
     cout << endl;
     cout << "|==================================================================|" << endl;
     cout << "You must enter a valid password to access the Teacher Menu !" << endl;
-    cout << "Pass: "; getline(cin, trPasstry);                                                    // Da se dobavi '*' !
+    cout << "Username: "; getline(cin, trUsernameTry);
+    cout << "Pass: "; getline(cin, trPasstry); // Da se dobavi '*' !
     cout << "|==================================================================|" << endl;
 
-    if (trPasstry == trPassword)
+    for (int i = 0; i < trCounter; i++)
     {
-        teacherMenu(quiz, quizcount, maxId, searchID, quiznumber);
-    }
-    else
-    {
-        cout << "Try Again !" << endl;
-        goto retry2;
+        if (trUsernameTry == reg[i].trUsername && trPasstry == reg[i].trPass)
+        {
+            teacherMenu(quiz, quizcount, maxId, searchID);
+        }
+        else
+        {
+            cout << "Try Again !" << endl;
+            goto retry2;
+        }
     }
 }
 
-bool mainMenu(string trPasstry, string trPassword, string stUsername, string stpasstry, string adminPass, string adminpasstry, ADMINISTRATOR* reg, int stCounter, int trCounter, int searchID, int& maxId, int quizcount, QUIZ* quiz, int quiznumber)
+bool mainMenu(string trPasstry, string stUsernameTry, string stpasstry, string adminPass, string adminpasstry, ADMINISTRATOR* reg, int stCounter, int trCounter, int searchID, int& maxId, int quizcount, QUIZ* quiz, int stanswercount, int AnswerCounterStudent, string trUsernameTry)
 {
     cout << endl;
     cout << "|======================|" << endl;
@@ -460,11 +511,11 @@ retry1:
     switch (option1)
     {
     case 1:
-        checkSystemTeacher(trPasstry, trPassword, quiz, quizcount, maxId, searchID, quiznumber);
+        checkSystemTeacher(trPasstry, quiz, quizcount, maxId, searchID, trUsernameTry, reg, trCounter);
         break;
 
     case 2:
-        checkSystemStudent(stUsername, stpasstry, quiz, quizcount, maxId, searchID);
+        checkSystemStudent(stUsernameTry, stpasstry, quiz, quizcount, maxId, searchID, stanswercount, AnswerCounterStudent, reg, stCounter);
         break;
 
     case 3:
@@ -480,13 +531,15 @@ retry1:
 int main()
 {
     int quizcount = 0;
+    int stanswercount = 0;
+    int AnswerCounterStudent = 0;
 
     //
-    string trPassword = "english123";
+    string trUsernameTry = "";
     string trPasstry = "";
     int trCounter = 0;
 
-    string stUsername = "";
+    string stUsernameTry = "";
     string stpasstry = "";
     int stCounter = 0;
 
