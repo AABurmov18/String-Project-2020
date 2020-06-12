@@ -13,7 +13,7 @@ struct ADMINISTRATOR
     string stUsername;
     string stPass;
 
-	string reg[100];
+	string reg;
 
     string trUsername;
     string trPass;
@@ -25,9 +25,7 @@ struct QUIZ
     string quizQuestions;
     string quizAnswers;
 
-    double time;
-
-	string quiz[100];
+	string quiz;
 
     string stAnswers;
 };
@@ -135,12 +133,15 @@ retry4:
 
 void addTeacherAccounts(ADMINISTRATOR* reg, int trCounter, int& maxId) // Structura administrator -> 'reg'
 {
-    for (int i = 0; i < trCounter; i++)
+    int amount;
+    cout << "Enter the amount of the accounts you want to add: "; cin >> amount;
+
+    for (int i = 0; i < amount; i++)
     {
         cout << endl;
         cout << "|==========================|" << endl;
-        cout << "Teacher Username: "; cin >> reg[i].trUsername;
-        cout << "Teacher Pass: "; cin >> reg[i].trPass;
+        cout << "Teacher Username: "; cin >> reg[trCounter].trUsername;
+        cout << "Teacher Pass: "; cin >> reg[trCounter].trPass;
         cout << "|==========================|" << endl;
     }
     trCounter++;
@@ -150,12 +151,15 @@ void addTeacherAccounts(ADMINISTRATOR* reg, int trCounter, int& maxId) // Struct
 
 void addStudentAccounts(ADMINISTRATOR* reg, int stCounter, int& maxId) // Structura administrator -> 'reg'
 {
-    for (int i = 0; i < stCounter; i++)
+    int amount;
+    cout << "Enter the amount of the accounts you want to add: "; cin >> amount;
+
+    for (int i = 0; i < amount; i++)
     {
         cout << endl;
         cout << "|==========================|" << endl;
-        cout << "Student Username: "; cin >> reg[i].stUsername;
-        cout << "Student Pass: "; cin >> reg[i].stPass;
+        cout << "Student Username: "; cin >> reg[stCounter].stUsername;
+        cout << "Student Pass: "; cin >> reg[stCounter].stPass;
         cout << "|==========================|" << endl;
     }
     stCounter++;
@@ -211,19 +215,19 @@ retry4:
     cout << endl;
     cout << "|============================================================================|" << endl;
     cout << "You must enter a valid password to access the administrator Menu !" << endl;
-    cout << "Pass: "; getline(cin, adminpasstry); // da se dobavi '*'
+    cout << "Pass: "; cin >> adminpasstry;
     cout << "|============================================================================|" << endl;
 
     if (adminpasstry == adminPass)
     {
         administratorMenu(reg, stCounter, trCounter, maxId, searchID);
+        return true;
     }
     else
     {
         cout << "Try Again !" << endl;
         goto retry4;
     }
-	return true;
 }
 
 // ---------------------------------------------------------------------------- Student ----------------------------------------------------------------------------
@@ -273,14 +277,17 @@ void startQuiz(QUIZ* quiz, int quizcount, int& maxId, int searchID, int stanswer
 
 void checkStudentResult(QUIZ* quiz, int quizcount, int& maxId, int searchID, int stanswercount, int AnswerCounterStudent)
 {
-    for (int i = 0; i < quizcount, stanswercount; i++)
+    for (int i = 0; i < quizcount; i++)
     {
-        if (quiz[stanswercount].stAnswers.find(quiz[quizcount].quizAnswers))
+        for (int i = 0; i < stanswercount; i++)
         {
-            AnswerCounterStudent++;
+            if (quiz[stanswercount].stAnswers.find(quiz[quizcount].quizAnswers))
+            {
+                AnswerCounterStudent++;
+            }
+            else
+                AnswerCounterStudent--;
         }
-        else
-            AnswerCounterStudent--;
     }
 
     if (AnswerCounterStudent >= 1 && AnswerCounterStudent <= 2)
@@ -368,12 +375,12 @@ retry10:
     cout << endl;
     cout << "|============================================================================|" << endl;
     cout << "You must enter a valid username and password to access the student Menu !" << endl;
-    cout << "Username: "; getline(cin, stUsernameTry);
-    cout << "Pass: "; getline(cin, stpasstry);
+    cout << "Username: "; cin >> stUsernameTry;
+    cout << "Pass: "; cin >> stpasstry;
     cout << "|============================================================================|" << endl;
     for (int i = 0; i < stCounter; i++)
     {
-        if (stUsernameTry == reg[i].stUsername && stpasstry == reg[i].stPass) // kato dobavim data -> tam shte ima zapisani deca (parola i ime) v tozi if shte proverim dali suotvetstvat
+        if (stUsernameTry == reg[i].stUsername && stpasstry == reg[i].stPass) 
         {
             studentMenu(quiz, quizcount, maxId, searchID, stanswercount, AnswerCounterStudent);
         }
@@ -420,7 +427,7 @@ bool createQuiz(QUIZ* quiz, int quizcount, int& maxId)
     int amount;
 
     cout << endl;
-    cout << "|==========================|" << endl;
+    cout << "|================================================|" << endl;
     cout << "Enter the name of the Quiz"; getline(cin, quiz[quizcount].quizName);
     //              cout << "Enter Quiz time remaining: "; cin >> quiz[quizcount].time; // Time
 
@@ -435,7 +442,7 @@ retry7:
             cout << endl;
         }
         quizcount++;
-        cout << "|==========================|" << endl;
+        cout << "|================================================|" << endl;
 
         idgenerator(maxId);
     }
@@ -444,7 +451,7 @@ retry7:
         cout << "Incorrect Input" << endl;
         goto retry7;
     }
-	return true;
+    return true;
 }
 
 bool teacherMenu(QUIZ* quiz, int quizcount, int& maxId, int searchID)
@@ -455,7 +462,6 @@ bool teacherMenu(QUIZ* quiz, int quizcount, int& maxId, int searchID)
     cout << "1. Create Quiz" << endl;
     cout << "2. View Quizzes" << endl;
     cout << "3. Delete Quiz" << endl;
-    cout << "4. View Students Grades" << endl;
     cout << "5. Grading scale" << endl;
 	cout << "6. Go back" << endl;
     cout << "|==========================|" << endl;
@@ -479,10 +485,6 @@ retry3:
         deleteQuiz(quiz, quizcount, maxId, searchID);
         break;
 
-    case 4:
-        // View Students results
-        break;
-
     case 5:
         gradingScale();
         break;
@@ -504,8 +506,8 @@ retry2:
     cout << endl;
     cout << "|==================================================================|" << endl;
     cout << "You must enter a valid password to access the Teacher Menu !" << endl;
-    cout << "Username: "; getline(cin, trUsernameTry);
-    cout << "Pass: "; getline(cin, trPasstry); // Da se dobavi '*' !
+    cout << "Username: "; cin >> trUsernameTry;
+    cout << "Pass: "; cin >> trPasstry;
     cout << "|==================================================================|" << endl;
 
     for (int i = 0; i < trCounter; i++)
@@ -540,10 +542,10 @@ bool mainMenu(string trPasstry, string stUsernameTry, string stpasstry, string a
     cout << endl;
     cout << "|======================|" << endl;
     cout << "Choose your character" << endl;
-    cout << "1. Teacher" << endl; // In progress
-    cout << "2. Student" << endl; // In progress
-    cout << "3. Administrator" << endl; // Complete
-	cout << "4. Exit" << endl; // Complete
+    cout << "1. Teacher" << endl; 
+    cout << "2. Student" << endl; 
+    cout << "3. Administrator" << endl; 
+	cout << "4. Exit" << endl; 
     cout << "|======================|" << endl;
 
 retry1:
