@@ -92,7 +92,7 @@ void viewStudentaccounts(ADMINISTRATOR* reg, int stCounter, int& maxId)
     }
 }
 
-void listDeleteAccountsMenu(ADMINISTRATOR* reg, int trCounter, int& maxId, int stCounter, int searchID)
+bool listDeleteAccountsMenu(ADMINISTRATOR* reg, int trCounter, int& maxId, int stCounter, int searchID)
 {
     cout << endl;
     cout << "|==========================|" << endl;
@@ -100,6 +100,7 @@ void listDeleteAccountsMenu(ADMINISTRATOR* reg, int trCounter, int& maxId, int s
     cout << "1.Student accounts" << endl;
     cout << "2.Teacher accounts" << endl;
     cout << "3.Delete accounts" << endl;
+	cout << "4.Go back to main menu" << endl;
     cout << "|==========================|" << endl;
 
 retry4:
@@ -121,10 +122,15 @@ retry4:
         deleteAccount(reg, trCounter, maxId, stCounter, searchID);
         break;
 
+	case 4:
+		return false;
+		break;
+
     default:
         cout << "Incorrect input" << endl;
         goto retry4;
     }
+	return true;
 }
 
 void addTeacherAccounts(ADMINISTRATOR* reg, int trCounter, int& maxId) // Structura administrator -> 'reg'
@@ -166,6 +172,7 @@ bool administratorMenu(ADMINISTRATOR* reg, int stCounter, int trCounter, int& ma
     cout << "1. Add Student accounts" << endl;
     cout << "2. Add Teacher accounts" << endl;
     cout << "3. List & Delete accounts" << endl;
+	cout << "4. Go back to main menu" << endl;
     cout << "|==========================|" << endl;
 
 retry4:
@@ -186,6 +193,10 @@ retry4:
     case 3:
         listDeleteAccountsMenu(reg, trCounter, maxId, stCounter, searchID);
         break;
+
+	case 4:
+		return false;
+		break;
 
     default:
         cout << "Incorrect input" << endl;
@@ -318,6 +329,7 @@ bool studentMenu(QUIZ* quiz, int quizcount, int& maxId, int searchID, int stansw
     cout << "2. Start Quiz" << endl;
     cout << "3. See your result" << endl;
     cout << "4. Grading scale" << endl;
+	cout << "5. Go back to main menu" << endl;
     cout << "|==========================|" << endl;
 
 retry3:
@@ -445,6 +457,7 @@ bool teacherMenu(QUIZ* quiz, int quizcount, int& maxId, int searchID)
     cout << "3. Delete Quiz" << endl;
     cout << "4. View Students Grades" << endl;
     cout << "5. Grading scale" << endl;
+	cout << "6. Go back" << endl;
     cout << "|==========================|" << endl;
 
 retry3:
@@ -473,6 +486,10 @@ retry3:
     case 5:
         gradingScale();
         break;
+
+	case 6:
+		return false;
+		break;
 
     default:
         cout << "Incorrect input" << endl;
@@ -506,6 +523,18 @@ retry2:
 	return true;
 }
 
+void exit()
+{
+	cout << endl;
+	cout << "**************************************" << endl;
+	cout << "**************************************" << endl;
+	cout << "*******    T H A N K  Y O U    *******" << endl;
+	cout << "*******    F O R  U S I N G    *******" << endl;
+	cout << "******* T H I S  P R O G R A M *******" << endl;
+	cout << "**************************************" << endl;
+	cout << "**************************************" << endl;
+}
+
 bool mainMenu(string trPasstry, string stUsernameTry, string stpasstry, string adminPass, string adminpasstry, ADMINISTRATOR* reg, int stCounter, int trCounter, int searchID, int& maxId, int quizcount, QUIZ* quiz, int stanswercount, int AnswerCounterStudent, string trUsernameTry)
 {
     cout << endl;
@@ -514,6 +543,7 @@ bool mainMenu(string trPasstry, string stUsernameTry, string stpasstry, string a
     cout << "1. Teacher" << endl; // In progress
     cout << "2. Student" << endl; // In progress
     cout << "3. Administrator" << endl; // Complete
+	cout << "4. Exit" << endl; // Complete
     cout << "|======================|" << endl;
 
 retry1:
@@ -534,6 +564,11 @@ retry1:
     case 3:
         checkSystemAdministrator(adminPass, adminpasstry, reg, stCounter, trCounter, maxId, searchID);
         break;
+
+	case 4:
+		exit();
+		return false;
+		break;
 
     default:
         cout << "Incorrect input" << endl;
