@@ -530,7 +530,7 @@ void exit()
 	cout << "**************************************" << endl;
 	cout << "*******    T H A N K  Y O U    *******" << endl;
 	cout << "*******    F O R  U S I N G    *******" << endl;
-	cout << "******* T H I S  P R O G R A M *******" << endl;
+	cout << "*******  O U R  P R O G R A M  *******" << endl;
 	cout << "**************************************" << endl;
 	cout << "**************************************" << endl;
 }
@@ -567,8 +567,7 @@ retry1:
 
 	case 4:
 		exit();
-		return false;
-		break;
+        return 0;
 
     default:
         cout << "Incorrect input" << endl;
